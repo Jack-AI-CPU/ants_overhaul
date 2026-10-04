@@ -14,26 +14,23 @@ elements.ant_larva = {
     }
 };
 
-// 2. QUEEN ANT (Stays deep underground, eats and lays larvae)
+// Give the Queen Ant the ability to dig underground like real life
 elements.ant_queen = {
-    color: "#3a1f04", // Huge, dark brown queen
+    color: "#3a1f04", 
     behavior: [
-        "XX|CR:ant_larva%1|XX",  // 1% chance to naturally produce a larva if space permits
-        "M2|XX|M2",              // Moves very slowly (M2) to simulate her heavy weight
-        "XX|M1|XX"
+        "XX              | CR:ant_larva%0.5 | XX",             // 0.5% chance per tick to lay a larva
+        "DL:sand,dirt,soil%15 | XX               | DL:sand,dirt,soil%15", // 15% chance to clear sand/dirt to her sides
+        "XX              | DB:sand,dirt,soil%30 | XX"              // 30% chance to dig downwards into the earth
     ],
     category: "life",
     state: "solid",
     density: 700,
     reactions: {
-        // When fed, her egg-laying speed dramatically spikes
         "sugar": { elem1: "ant_queen", elem2: "ant_larva" },
-        "honey": { elem1: "ant_queen", elem2: "ant_larva" },
-        // The queen stays safe; if a predator touches her, she gets hurt
-        "spider": { elem1: "meat", elem2: "spider" },
-        "frog": { elem1: null, elem2: "frog" }
+        "honey": { elem1: "ant_queen", elem2: "ant_larva" }
     }
 };
+
 
 // 3. SOLDIER ANT (Aggressive, patrols, protects the nest)
 elements.ant_soldier = {
